@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
-public class UserExceptionHandler {
+public class SessionExceptionHandler {
 
     @ExceptionHandler
-    public ResponseEntity<String> onUserException(UserException e) {
+    public ResponseEntity<String> onSessionException(SessionException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 
