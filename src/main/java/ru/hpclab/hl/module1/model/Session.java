@@ -12,25 +12,25 @@ public class Session {
     @NonNull
     private UUID ID;
     @NonNull
-    private Equipment equipment;
+    private UUID equipmentID;
     @NonNull
-    private Visitor visitor;
+    private UUID visitorID;
     @NonNull
     private LocalDateTime data;
     private int duration;
 
-    public Session(@NonNull UUID ID, @NonNull Equipment equipment, @NonNull Visitor visitor, @NonNull LocalDateTime data, int duration) {
+    public Session(@NonNull UUID ID, @NonNull UUID equipmentID, @NonNull UUID visitorID, @NonNull LocalDateTime data, int duration) {
         this.ID = ID;
-        this.equipment = equipment;
-        this.visitor = visitor;
+        this.equipmentID = equipmentID;
+        this.visitorID = visitorID;
         this.data = data;
         this.duration = duration;
     }
 
-    public Session(@NonNull UUID ID, @NonNull Equipment equipment, @NonNull Visitor visitor, @NonNull LocalDateTime data) {
+    public Session(@NonNull UUID ID, @NonNull UUID equipmentID, @NonNull UUID visitorID, @NonNull LocalDateTime data) {
         this.ID = ID;
-        this.equipment = equipment;
-        this.visitor = visitor;
+        this.equipmentID = equipmentID;
+        this.visitorID = visitorID;
         this.data = data;
     }
 
@@ -47,21 +47,21 @@ public class Session {
     }
 
     @NonNull
-    public Equipment getEquipment() {
-        return equipment;
+    public UUID getEquipmentID() {
+        return equipmentID;
     }
 
-    public void setEquipment(@NonNull Equipment equipment) {
-        this.equipment = equipment;
+    public void setEquipmentID(@NonNull UUID equipmentID) {
+        this.equipmentID = equipmentID;
     }
 
     @NonNull
-    public Visitor getVisitor() {
-        return visitor;
+    public UUID getVisitorID() {
+        return visitorID;
     }
 
-    public void setVisitor(@NonNull Visitor visitor) {
-        this.visitor = visitor;
+    public void setVisitorID(@NonNull UUID visitorID) {
+        this.visitorID = visitorID;
     }
 
     @NonNull
@@ -85,9 +85,9 @@ public class Session {
     public String toString() {
         return "Session {\n" +
                 "  identifier=" + ID +
-                ",\n  equipment=[\n" + equipment +
-                "],\n  visitor=[\n" + visitor +
-                "],\n  data=" + data +
+                ",\n  equipment_identifier=" + equipmentID +
+                ",\n  visitor_identifier=" + visitorID +
+                ",\n  data=" + data +
                 ((duration == 0) ? "" : ",\n  duration=" + duration) +
                 "};";
     }

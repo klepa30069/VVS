@@ -12,9 +12,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.hpclab.hl.module1.Application;
+import ru.hpclab.hl.module1.model.Equipment;
 import ru.hpclab.hl.module1.model.Session;
 import ru.hpclab.hl.module1.model.Visitor;
-import ru.hpclab.hl.module1.model.Equipment;
 import ru.hpclab.hl.module1.repository.SessionRepository;
 
 import java.time.LocalDateTime;
@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = Application.class)
 @AutoConfigureMockMvc
-public class SessionControllerTest {
+public class AverageDurationControllerTest {
     private final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
     @Autowired
@@ -43,18 +43,22 @@ public class SessionControllerTest {
     }
 
     @Test
-    public void get_should_returnSession_when_sessionExists() throws Exception {
+    public void get_should_returnAverageDuration_when_sessionsExist() throws Exception {
         LocalDateTime data = LocalDateTime.now();
         Equipment equipment = new Equipment(UUID.randomUUID(), "bicycle", true);
         Visitor visitor = new Visitor(UUID.randomUUID(), "name");
-        Session session = new Session(UUID.randomUUID(), equipment.getId(), visitor.getId(), data);
-        sessionRepository.save(session); // Сохраняем сессию в репозитории
 
-        // Serialize the session to JSON
-        String expectedJson = objectMapper.writeValueAsString(session);
+        // Создаем сессии с разной продолжительностью
+        for (int i = 0; i < 5; i++) {
+            Session session = new Session(UUID.randomUUID(), equipment.getId(), visitor.getId(), data.minusMinutes(i * 10), i * 10 + 5);
+            sessionRepository.save(session); // Сохраняем сессию в репозитории
+        }
 
-        mvc.perform(get("/sessions/" + session.getId()).accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
-//                .andExpect(content().json(expectedJson));
+        // Ожидаем, что средняя продолжительность будет равна (5 + 15 + 25 + 35 + 45) / 5 = 25
+        double expectedAverageDuration = 25.0;
+
+        mvc.perform(get("/average-duration/" + visitor.getId()).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(String.valueOf(expectedAverageDuration)));
     }
 }

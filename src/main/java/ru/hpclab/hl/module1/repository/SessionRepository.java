@@ -1,5 +1,7 @@
 package ru.hpclab.hl.module1.repository;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.ObjectUtils;
 import ru.hpclab.hl.module1.controller.exeption.SessionException;
@@ -14,6 +16,8 @@ public class SessionRepository {
 
     public static final String SESSION_NOT_FOUND_MSG = "Session with ID %s not found";
     public static final String SESSION_EXISTS_MSG = "Session with ID %s is already exists";
+    public static final String VISITOR_NOT_FOUND_MSG = "Visitor with ID %s not found";
+    private static final Logger log = LoggerFactory.getLogger(SessionRepository.class);
 
     private final Map<UUID, Session> sessions = new HashMap<>();
 
@@ -27,6 +31,19 @@ public class SessionRepository {
             throw new SessionException(format(SESSION_NOT_FOUND_MSG, id));
         }
         return session;
+    }
+
+    public List<Session> findByVisitorId(UUID visitorId) {
+        List<Session> visitorSessions = new ArrayList<>();
+        for (Session session : sessions.values()) {
+            if (session.getVisitorID().equals(visitorId)) {
+                visitorSessions.add(session);
+            }
+        }
+        if (visitorSessions.isEmpty()) {
+            throw new SessionException(format(VISITOR_NOT_FOUND_MSG, visitorId));
+        }
+        return visitorSessions;
     }
 
     public void delete(UUID id) {

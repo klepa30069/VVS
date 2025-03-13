@@ -34,12 +34,15 @@ public class SessionServiceTest {
     @Autowired
     private SessionRepository sessionRepository;
 
-    private final LocalDateTime data = LocalDateTime.now();
+    private static final LocalDateTime data = LocalDateTime.now();
+    private static Equipment equipment = new Equipment();
+    private static Visitor visitor = new Visitor();
+
 
     @Test
     public void testCreateAndGet(){
         //create
-        Session session = new Session(UUID.randomUUID(), new Equipment(), new Visitor(), data);
+        Session session = new Session(UUID.randomUUID(), equipment.getId(), visitor.getId(), data);
 
         Session savedSession = sessionService.saveSession(session);
 
@@ -58,15 +61,13 @@ public class SessionServiceTest {
     @Configuration
     static class SessionServiceTestConfiguration {
 
-        private final LocalDateTime data = LocalDateTime.now();
-
         @Bean
         SessionRepository sessionRepository() {
             SessionRepository sessionRepository = mock(SessionRepository.class);
-            when(sessionRepository.save(any())).thenReturn(new Session(UUID.randomUUID(), new Equipment(), new Visitor(), data));
+            when(sessionRepository.save(any())).thenReturn(new Session(UUID.randomUUID(), equipment.getId(), visitor.getId(), data));
             when(sessionRepository.findAll())
-                    .thenReturn(Arrays.asList(new Session(UUID.randomUUID(), new Equipment(), new Visitor(), data.plusDays(12)),
-                            new Session(UUID.randomUUID(), new Equipment(), new Visitor(), data.plusDays(21))));
+                    .thenReturn(Arrays.asList(new Session(UUID.randomUUID(), equipment.getId(), visitor.getId(), data.plusDays(12)),
+                            new Session(UUID.randomUUID(), equipment.getId(), visitor.getId(), data.plusDays(21))));
             return sessionRepository;
         }
 
