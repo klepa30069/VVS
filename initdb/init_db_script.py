@@ -73,3 +73,4 @@ def generate_sql(filename, num_visitors=10, num_equipments=5, num_sessions=8):
         f.write("COMMIT;\n")
 
 generate_sql("scripts/generated_script.sql")
+print("Succesful")

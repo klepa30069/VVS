@@ -1,19 +1,16 @@
-version: '3.8'
 services:
   postgres:
     image: postgres:15
-    container_name: museum-db
+    container_name: EQUIPMENT-db
     restart: always
     environment:
-      POSTGRES_DB: museum
+      POSTGRES_DB: EQUIPMENT
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: secret
-      POSTGRES_INITDB_ARGS: "--encoding=UTF8"  # Добавил, чтобы избежать проблем с кодировкой
     ports:
       - "5432:5432"
     volumes:
-      - museum_data:/var/lib/postgresql/data
-      - ./src/main/resources/db/migration:/docker-entrypoint-initdb.d # Подключаем папку с миграциями
+      - ./data/db:/var/lib/postgresql/data
 
   pgadmin:
     image: dpage/pgadmin4
@@ -26,18 +23,6 @@ services:
       - "5050:80"
     depends_on:
       - postgres
-  app:
-    build: museum-app
-    container_name: museum-app
-    restart: always
-    depends_on:
-      - postgres
-    ports:
-      - "8080:8080"
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://museum-db:5432/museum
-      SPRING_DATASOURCE_USERNAME: admin
-      SPRING_DATASOURCE_PASSWORD: secret
 
 volumes:
   museum_data:
