@@ -1,45 +1,39 @@
 package ru.hpclab.hl.module1.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hpclab.hl.module1.model.Visitor;
 import ru.hpclab.hl.module1.service.VisitorService;
-
 import java.util.List;
 
 @RestController
+@RequestMapping("/visitors")
 public class VisitorController {
-
     private final VisitorService visitorService;
 
-    @Autowired
     public VisitorController(VisitorService visitorService) {
         this.visitorService = visitorService;
     }
 
-    @GetMapping("/visitor")
-    public List<Visitor> getVisitors() {
-        return visitorService.getAllVisitors();
+    @PostMapping
+    public ResponseEntity<Visitor> createVisitor(@RequestBody Visitor visitor) {
+        return ResponseEntity.ok(visitorService.addVisitor(visitor));
     }
 
-    @GetMapping("/visitors/{id}")
-    public Visitor getVisitorById(@PathVariable String id) {
-        return visitorService.getVisitorById(id);
+    @GetMapping("/{id}")
+    public ResponseEntity<Visitor> getVisitor(@PathVariable String id) {
+        Visitor visitor = visitorService.getVisitor(id);
+        return visitor != null ? ResponseEntity.ok(visitor) : ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/visitors/{id}")
-    public void deleteVisitor(@PathVariable String id) {
+    @GetMapping
+    public ResponseEntity<List<Visitor>> getAllVisitors() {
+        return ResponseEntity.ok(visitorService.getAllVisitors());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteVisitor(@PathVariable String id) {
         visitorService.deleteVisitor(id);
+        return ResponseEntity.noContent().build();
     }
-
-    @PostMapping(value = "/visitors/")
-    public Visitor saveVisitor(@RequestBody Visitor visitor) {
-        return visitorService.saveVisitor(visitor);
-    }
-
-    @PutMapping(value = "/visitors/{id}")
-    public Visitor updateVisitor(@PathVariable(required = false) String id, @RequestBody Visitor visitor) {
-        return visitorService.updateVisitor(id, visitor);
-    }
-
 }

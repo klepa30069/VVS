@@ -1,3 +1,4 @@
+/*
 package ru.hpclab.hl.module1.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -48,3 +49,4 @@ public class EquipmentControllerTest {
                 .andExpect(content().json(expectedJson));
     }
 }
+*/

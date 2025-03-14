@@ -1,45 +1,45 @@
 package ru.hpclab.hl.module1.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hpclab.hl.module1.model.Session;
 import ru.hpclab.hl.module1.service.SessionService;
-
 import java.util.List;
+import java.util.UUID;
 
 @RestController
+@RequestMapping("/sessions")
 public class SessionController {
-
     private final SessionService sessionService;
 
-    @Autowired
     public SessionController(SessionService sessionService) {
         this.sessionService = sessionService;
     }
 
-    @GetMapping("/session")
-    public List<Session> getSessions() {
-        return sessionService.getAllSessions();
+    @PostMapping
+    public ResponseEntity<Session> createSession(@RequestBody Session session) {
+        return ResponseEntity.ok(sessionService.addSession(session));
     }
 
-    @GetMapping("/sessions/{id}")
-    public Session getSessionById(@PathVariable String id) {
-        return sessionService.getSessionById(id);
+    @GetMapping("/{id}")
+    public ResponseEntity<Session> getSession(@PathVariable String id) {
+        Session session = sessionService.getSession(id);
+        return session != null ? ResponseEntity.ok(session) : ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/sessions/{id}")
-    public void deleteSession(@PathVariable String id) {
+    @GetMapping
+    public ResponseEntity<List<Session>> getAllSessions() {
+        return ResponseEntity.ok(sessionService.getAllSessions());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteSession(@PathVariable String id) {
         sessionService.deleteSession(id);
+        return ResponseEntity.noContent().build();
     }
 
-    @PostMapping(value = "/sessions/")
-    public Session saveSession(@RequestBody Session session) {
-        return sessionService.saveSession(session);
+    @GetMapping("/average-duration/{visitorId}")
+    public double getAverageDuration(@PathVariable String visitorId) {
+        return sessionService.calculateAverageDurationForMonth(UUID.fromString(visitorId));
     }
-
-    @PutMapping(value = "/sessions/{id}")
-    public Session updateSession(@PathVariable(required = false) String id, @RequestBody Session session) {
-        return sessionService.updateSession(id, session);
-    }
-
 }

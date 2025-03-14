@@ -1,91 +1,17 @@
 package ru.hpclab.hl.module1.repository;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Repository;
-import org.springframework.util.ObjectUtils;
-import ru.hpclab.hl.module1.controller.exeption.SessionException;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.data.jpa.repository.JpaRepository;
 import ru.hpclab.hl.module1.model.Session;
 
-import java.util.*;
+import java.time.LocalDateTime;
+import java.util.UUID;
+import java.util.List;
 
-import static java.lang.String.format;
-
-@Repository
-public class SessionRepository {
-
-    public static final String SESSION_NOT_FOUND_MSG = "Session with ID %s not found";
-    public static final String SESSION_EXISTS_MSG = "Session with ID %s is already exists";
-    public static final String VISITOR_NOT_FOUND_MSG = "Visitor with ID %s not found";
-    private static final Logger log = LoggerFactory.getLogger(SessionRepository.class);
-
-    private final Map<UUID, Session> sessions = new HashMap<>();
-
-    public List<Session> findAll() {
-        return new ArrayList<>(sessions.values());
-    }
-
-    public Session findById(UUID id) {
-        final var session = sessions.get(id);
-        if (session == null) {
-            throw new SessionException(format(SESSION_NOT_FOUND_MSG, id));
-        }
-        return session;
-    }
-
-    public List<Session> findByVisitorId(UUID visitorId) {
-        List<Session> visitorSessions = new ArrayList<>();
-        for (Session session : sessions.values()) {
-            if (session.getVisitorID().equals(visitorId)) {
-                visitorSessions.add(session);
-            }
-        }
-        if (visitorSessions.isEmpty()) {
-            throw new SessionException(format(VISITOR_NOT_FOUND_MSG, visitorId));
-        }
-        return visitorSessions;
-    }
-
-    public void delete(UUID id) {
-        final var removed = sessions.remove(id);
-        if (removed == null) {
-            throw new SessionException(format(SESSION_NOT_FOUND_MSG, id));
-        }
-    }
-
-    public Session save(Session session) {
-        if (ObjectUtils.isEmpty(session.getId())) {
-            session.setId(UUID.randomUUID());
-        }
-
-        final var sessionData = sessions.get(session.getId());
-        if (sessionData != null) {
-            throw new SessionException(format(SESSION_EXISTS_MSG, session.getId()));
-        }
-
-        sessions.put(session.getId(), session);
-
-        return session;
-    }
-
-    public Session put(Session session) {
-        final var sessionData = sessions.get(session.getId());
-        if (sessionData == null) {
-            throw new SessionException(format(SESSION_NOT_FOUND_MSG, session.getId()));
-        }
-
-        final var removed = sessions.remove(session.getId());
-        if (removed != null) {
-            sessions.put(session.getId(), session);
-        } else {
-            throw new SessionException(format(SESSION_NOT_FOUND_MSG, session.getId()));
-        }
-
-        return session;
-    }
-
-    public void clear(){
-        sessions.clear();
-    }
-
+public interface SessionRepository extends JpaRepository<Session, UUID> {
+    @Query("SELECT AVG(s.duration) FROM Session s WHERE s.visitor.id = :visitorId AND s.date BETWEEN :startDate AND :endDate")
+    Double averageDurationByVisitorIdAndDateBetween(@Param("visitorId") UUID visitorId,
+                                                    @Param("startDate") LocalDateTime startDate,
+                                                    @Param("endDate") LocalDateTime endDate);
 }

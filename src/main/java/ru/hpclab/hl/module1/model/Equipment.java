@@ -1,62 +1,30 @@
 package ru.hpclab.hl.module1.model;
 
-
-import org.springframework.lang.NonNull;
-
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import java.util.UUID;
 
-// Тренажер
+@Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name="equipment")
 public class Equipment {
 
-    @NonNull
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private UUID id;
-    @NonNull
-    private String type; // "беговая дорожка" или "велосипед"
-    @NonNull
-    private boolean status;
 
-    public Equipment(@NonNull UUID identifier, @NonNull String type, @NonNull boolean status) {
-        this.id = identifier;
-        this.type = type;
-        this.status = status;
-    }
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Equipment type;
 
-    public Equipment() {
-    }
+    @Column(nullable = false, columnDefinition = "boolean default false")
+    private boolean status = false;
 
-    @NonNull
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(@NonNull UUID id) {
-        this.id = id;
-    }
-
-    @NonNull
-    public String getType() {
-        return type;
-    }
-
-    public void setType(@NonNull String type) {
-        this.type = type;
-    }
-
-    @NonNull
-    public boolean getStatus() {
-        return status;
-    }
-
-    public void setStatus(@NonNull boolean status) {
-        this.status = status;
-    }
-
-    @Override
-    public String toString() {
-        return "Equipment {\n" +
-                "  identifier=" + id +
-                ",\n  type='" + type +
-                "',\n  is =" + status +
-                "};";
+    public enum EquipmentType {
+        TREADMILL, BIKE, CROSS_FIT, DUMBBELLS, HORIZONTAL_DEADLIFT
     }
 }

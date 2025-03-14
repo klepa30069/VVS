@@ -1,45 +1,39 @@
 package ru.hpclab.hl.module1.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hpclab.hl.module1.model.Equipment;
 import ru.hpclab.hl.module1.service.EquipmentService;
-
 import java.util.List;
 
 @RestController
+@RequestMapping("/equipments")
 public class EquipmentController {
-
     private final EquipmentService equipmentService;
 
-    @Autowired
     public EquipmentController(EquipmentService equipmentService) {
         this.equipmentService = equipmentService;
     }
 
-    @GetMapping("/equipment")
-    public List<Equipment> getEquipments() {
-        return equipmentService.getAllEquipments();
+    @PostMapping
+    public ResponseEntity<Equipment> createEquipment(@RequestBody Equipment equipment) {
+        return ResponseEntity.ok(equipmentService.addEquipment(equipment));
     }
 
-    @GetMapping("/equipments/{id}")
-    public Equipment getEquipmentById(@PathVariable String id) {
-        return equipmentService.getEquipmentById(id);
+    @GetMapping("/{id}")
+    public ResponseEntity<Equipment> getEquipment(@PathVariable String id) {
+        Equipment equipment = equipmentService.getEquipment(id);
+        return equipment != null ? ResponseEntity.ok(equipment) : ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/equipments/{id}")
-    public void deleteEquipment(@PathVariable String id) {
+    @GetMapping
+    public ResponseEntity<List<Equipment>> getAllEquipments() {
+        return ResponseEntity.ok(equipmentService.getAllEquipments());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteEquipment(@PathVariable String id) {
         equipmentService.deleteEquipment(id);
+        return ResponseEntity.noContent().build();
     }
-
-    @PostMapping(value = "/equipments/")
-    public Equipment saveEquipment(@RequestBody Equipment equipment) {
-        return equipmentService.saveEquipment(equipment);
-    }
-
-    @PutMapping(value = "/equipments/{id}")
-    public Equipment updateEquipment(@PathVariable(required = false) String id, @RequestBody Equipment equipment) {
-        return equipmentService.updateEquipment(id, equipment);
-    }
-
 }

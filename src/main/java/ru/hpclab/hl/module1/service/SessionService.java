@@ -4,36 +4,41 @@ import org.springframework.stereotype.Service;
 import ru.hpclab.hl.module1.model.Session;
 import ru.hpclab.hl.module1.repository.SessionRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
 @Service
 public class SessionService {
+    private final SessionRepository repository;
 
-    private final SessionRepository sessionRepository;
+    public SessionService(SessionRepository repository) {
+        this.repository = repository;
+    }
 
-    public SessionService(SessionRepository sessionRepository) {
-        this.sessionRepository = sessionRepository;
+    public Session addSession(Session session) {
+        return repository.save(session);
+    }
+
+    public Session getSession(String id) {
+        return repository.findById(UUID.fromString(id)).orElse(null);
     }
 
     public List<Session> getAllSessions() {
-        return sessionRepository.findAll();
-    }
-
-    public Session getSessionById(String id) {
-        return sessionRepository.findById(UUID.fromString(id));
-    }
-
-    public Session saveSession(Session session) {
-        return sessionRepository.save(session);
+        return repository.findAll();
     }
 
     public void deleteSession(String id) {
-        sessionRepository.delete(UUID.fromString(id));
+        repository.deleteById(UUID.fromString(id));
     }
 
-    public Session updateSession(String id, Session session) {
-        session.setId(UUID.fromString(id));
-        return sessionRepository.put(session);
+    public double calculateAverageDurationForMonth(UUID visitorId) {
+        LocalDateTime oneMonthAgo = LocalDateTime.now().minusMonths(1);
+        LocalDateTime now = LocalDateTime.now();
+
+        // Получаем среднюю продолжительность за последний месяц
+        Double averageDuration = repository.averageDurationByVisitorIdAndDateBetween(visitorId, oneMonthAgo, now);
+
+        return averageDuration != null ? averageDuration : 0.0; // Если нет сессий, возвращаем 0
     }
 }

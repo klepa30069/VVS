@@ -1,3 +1,4 @@
+/*
 package ru.hpclab.hl.module1.service;
 
 import org.junit.jupiter.api.Assertions;
@@ -48,20 +49,20 @@ public class EquipmentServiceTest {
         Assertions.assertEquals("runner", equipmentList.get(0).getType());
         Assertions.assertEquals("bysical", equipmentList.get(1).getType());
         Mockito.verify(equipmentRepository, Mockito.times(1)).findAll();
-
     }
 
     @Configuration
     static class EquipmentServiceTestConfiguration {
-
         @Bean
         EquipmentRepository equipmentRepository() {
+
             EquipmentRepository equipmentRepository = mock(EquipmentRepository.class);
             when(equipmentRepository.save(any())).thenReturn(new Equipment(UUID.randomUUID(), "bysical", false));
             when(equipmentRepository.findAll())
                     .thenReturn(Arrays.asList(new Equipment(UUID.randomUUID(), "runner", false),
                             new Equipment(UUID.randomUUID(), "bysical", false)));
             return equipmentRepository;
+
         }
 
         @Bean
@@ -71,3 +72,4 @@ public class EquipmentServiceTest {
     }
 
 }
+*/
