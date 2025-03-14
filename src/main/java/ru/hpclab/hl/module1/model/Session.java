@@ -18,14 +18,18 @@ public class Session {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private UUID ID;
+
     @ManyToOne
-    @Column(nullable = false)
+    @JoinColumn(name = "equipment_id", nullable = false) // Используем @JoinColumn вместо @Column
     private Equipment equipment;
+
     @ManyToOne
-    @Column(nullable = false)
+    @JoinColumn(name = "visitor_id", nullable = false) // Используем @JoinColumn вместо @Column
     private Visitor visitor;
+
     @Column(nullable = false)
     private LocalDateTime date;
+
     @Column(columnDefinition = "int default 0")
     private int duration = 0;
 }

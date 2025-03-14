@@ -19,11 +19,10 @@ public class Equipment {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Equipment type;
+    private EquipmentType type;
 
     @Column(nullable = false, columnDefinition = "boolean default false")
     private boolean status = false;
-
     public enum EquipmentType {
         TREADMILL, BIKE, CROSS_FIT, DUMBBELLS, HORIZONTAL_DEADLIFT
     }

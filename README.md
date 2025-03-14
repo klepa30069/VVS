@@ -10,14 +10,18 @@
 
 # Более глобальное ТЗ:
 
-## LAB0 -- DONE 12.03
+## LAB0
+### -- DONE 12.03
+### -- PASSED 12.03
 
 1. Создать git repo и DockerHub registry
 2. Расшарить доступ для mmrovnyagin@gmail.com/rovn_m или сделать публичным git-репо
 3. Внести данные в таблицу https://docs.google.com/spreadsheets/d/1XEHl_LM9JRf6LXqhfKfPoXbKtudeKp7opYUAuyNK_mw/edit?gid=0#gid=0
 
 
-## LAB1 -- DONE 13.03
+## LAB1
+### -- DONE 13.03
+### -- PASSED 13.03
 
 1. Использовать в качестве шаблона код из ветки feature/spring-boot-test https://bitbucket.org/zil-courses/hl-module1/src/main/
 2. Переделать проект в IntelliJ IDEA под своего бизнес-постановку https://docs.google.com/document/d/1J4uhP4-q98WRGWdvPSACE9XhxGEI68ie/edit  (в качестве реализации компонентов репозиториев использовать статические поля-коллекции Java)
@@ -25,6 +29,8 @@
 
 
 ## LAB2
+### -- DONE 14.03
+### -- PASSED
 
 1. Развернуть PostgreSQL (в docker compose (https://proghunter.ru/articles/running-postgresql-and-pgadmin-in-docker ) или локально)
 2. Переделать компоненты-репозитории на работу с таблицами БД
@@ -33,6 +39,8 @@
 
 
 ## LAB3
+### -- DONE 14.03
+### -- PASSED
 
 1. Написать Dockerfile для контейнеризации приложения
 2. Написать генератор create/insert для initdb (https://habr.com/ru/articles/578744/ ), например на python, запускать генератор перед запуском DB
@@ -41,12 +49,16 @@
 
 
 ## LAB3.5
+### -- DONE
+### -- PASSED
 
 1. Развернуть docker compose на одной VM
 2. Выполнить curl одного из эндпойнтов с другой VM и продемонстрировать готовность к нагрузочному тестированию
 
 
 ## LAB4
+### -- DONE
+### -- PASSED
 
 1. Развернуть K6 (https://k6.io/ ) на соседней виртуальной машине
 2. Подготовить простейший (получение данных одной из таблиц) нагрузочный тест

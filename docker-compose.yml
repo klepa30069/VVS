@@ -1,16 +1,19 @@
+version: '3.8'
 services:
   postgres:
     image: postgres:15
-    container_name: EQUIPMENT-db
+    container_name: gym-db
     restart: always
     environment:
-      POSTGRES_DB: EQUIPMENT
+      POSTGRES_DB: gym
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: secret
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8"  # Добавила, чтобы избежать проблем с кодировкой
     ports:
       - "5432:5432"
     volumes:
-      - ./data/db:/var/lib/postgresql/data
+      - gym_data:/var/lib/postgresql/data
+      - ./src/main/resources/db/migration:/docker-entrypoint-initdb.d # Подключаем папку с миграциями
 
   pgadmin:
     image: dpage/pgadmin4
@@ -25,4 +28,4 @@ services:
       - postgres
 
 volumes:
-  museum_data:
+  gym_data:
