@@ -9,25 +9,25 @@ import java.util.UUID;
 
 @Service
 public class VisitorService {
-    private final VisitorRepository repository;
+    private final VisitorRepository visitorRepository;
 
-    public VisitorService(VisitorRepository repository) {
-        this.repository = repository;
+    public VisitorService(VisitorRepository visitorRepository) {
+        this.visitorRepository = visitorRepository;
     }
 
     public Visitor addVisitor(Visitor visitor) {
-        return repository.save(visitor);
+        return visitorRepository.save(visitor);
     }
 
     public Visitor getVisitor(String id) {
-        return repository.findById(UUID.fromString(id)).orElse(null);
+        return visitorRepository.findById(UUID.fromString(id)).orElse(null);
     }
 
     public List<Visitor> getAllVisitors() {
-        return repository.findAll();
+        return visitorRepository.findAll();
     }
 
     public void deleteVisitor(String id) {
-        repository.deleteById(UUID.fromString(id));
+        visitorRepository.deleteById(UUID.fromString(id));
     }
 }

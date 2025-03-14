@@ -9,25 +9,25 @@ import java.util.UUID;
 
 @Service
 public class EquipmentService {
-    private final EquipmentRepository repository;
+    private final EquipmentRepository equipmentRepository;
 
-    public EquipmentService(EquipmentRepository repository) {
-        this.repository = repository;
+    public EquipmentService(EquipmentRepository equipmentRepository) {
+        this.equipmentRepository = equipmentRepository;
     }
 
     public Equipment addEquipment(Equipment equipment) {
-        return repository.save(equipment);
+        return equipmentRepository.save(equipment);
     }
 
     public Equipment getEquipment(String id) {
-        return repository.findById(UUID.fromString(id)).orElse(null);
+        return equipmentRepository.findById(UUID.fromString(id)).orElse(null);
     }
 
     public List<Equipment> getAllEquipments() {
-        return repository.findAll();
+        return equipmentRepository.findAll();
     }
 
     public void deleteEquipment(String id) {
-        repository.deleteById(UUID.fromString(id));
+        equipmentRepository.deleteById(UUID.fromString(id));
     }
 }

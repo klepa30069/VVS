@@ -10,26 +10,26 @@ import java.util.UUID;
 
 @Service
 public class SessionService {
-    private final SessionRepository repository;
+    private final SessionRepository sessionRepository;
 
-    public SessionService(SessionRepository repository) {
-        this.repository = repository;
+    public SessionService(SessionRepository sessionRepository) {
+        this.sessionRepository = sessionRepository;
     }
 
     public Session addSession(Session session) {
-        return repository.save(session);
+        return sessionRepository.save(session);
     }
 
     public Session getSession(String id) {
-        return repository.findById(UUID.fromString(id)).orElse(null);
+        return sessionRepository.findById(UUID.fromString(id)).orElse(null);
     }
 
     public List<Session> getAllSessions() {
-        return repository.findAll();
+        return sessionRepository.findAll();
     }
 
     public void deleteSession(String id) {
-        repository.deleteById(UUID.fromString(id));
+        sessionRepository.deleteById(UUID.fromString(id));
     }
 
     public double calculateAverageDurationForMonth(UUID visitorId) {
@@ -37,7 +37,7 @@ public class SessionService {
         LocalDateTime now = LocalDateTime.now();
 
         // Получаем среднюю продолжительность за последний месяц
-        Double averageDuration = repository.averageDurationByVisitorIdAndDateBetween(visitorId, oneMonthAgo, now);
+        Double averageDuration = sessionRepository.averageDurationByVisitorIdAndDateBetween(visitorId, oneMonthAgo, now);
 
         return averageDuration != null ? averageDuration : 0.0; // Если нет сессий, возвращаем 0
     }

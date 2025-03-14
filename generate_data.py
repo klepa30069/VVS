@@ -30,7 +30,7 @@ def generate_visitors(n):
 # Функция для генерации случайных данных для таблицы equipment
 def generate_equipment(n):
     equipment = []
-    types = ["Treadmill", "Elliptical", "Rowing Machine", "Bike", "Leg Press"]
+    types = ["TREADMILL", "BIKE", "CROSS_FIT", "DUMBBELLS", "HORIZONTAL_DEADLIFT"]
     for _ in range(n):
         equipment_id = str(uuid.uuid4())  # Приводим UUID к строке
         type_ = random.choice(types)
