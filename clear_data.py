@@ -3,7 +3,7 @@ from psycopg2 import sql
 
 # Параметры подключения к базе данных
 DB_HOST = "localhost"  # Хост
-DB_NAME = "museum"     # Имя базы данных
+DB_NAME = "gym"     # Имя базы данных
 DB_USER = "admin"      # Имя пользователя
 DB_PASSWORD = "secret" # Пароль
 
