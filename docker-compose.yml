@@ -31,9 +31,7 @@ services:
 
 
   app:
-    build:
-      context: klepa300/gym
-      dockerfile: Dockerfile
+    image: klepa300/gym
     container_name: spring-boot-app
     restart: always
     depends_on:
