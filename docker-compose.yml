@@ -1,31 +1,52 @@
-version: '3.8'
 services:
-  postgres:
-    image: postgres:15
-    container_name: gym-db
+
+  init-db:
+    image: python:3.11-alpine
+    container_name: db-init
+    volumes:
+      - ./initdb:/initdb
+    working_dir: /initdb
+    entrypoint: ["python", "generate_sql.py"]
+    networks:
+      - app-network
+
+
+  database:
+    image: postgres:16.1-alpine3.18
+    container_name: pg-docker
     restart: always
     environment:
-      POSTGRES_DB: gym
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: secret
-      POSTGRES_INITDB_ARGS: "--encoding=UTF8"  # Добавила, чтобы избежать проблем с кодировкой
+      POSTGRES_DB: gym
     ports:
       - "5432:5432"
     volumes:
-      - gym_data:/var/lib/postgresql/data
-      - ./src/main/resources/db/migration:/docker-entrypoint-initdb.d # Подключаем папку с миграциями
-
-  pgadmin:
-    image: dpage/pgadmin4
-    container_name: pgadmin
-    restart: always
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@example.com  # Укажите ваш email
-      PGADMIN_DEFAULT_PASSWORD: secret          # Укажите ваш пароль
-    ports:
-      - "5050:80"
+      - ./initdb/scripts_python:/docker-entrypoint-initdb.d
+    networks:
+      - app-network
     depends_on:
-      - postgres
+      init-db:
+        condition: service_completed_successfully
 
-volumes:
-  gym_data:
+
+  app:
+    image: klepa300/gym
+    container_name: spring-boot-app
+    restart: always
+    depends_on:
+      - database
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/gym
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: secret
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+
+
+networks:
+  app-network:
+    driver: bridge
