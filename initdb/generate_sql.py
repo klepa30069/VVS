@@ -69,7 +69,7 @@ def generate_sql(filename, num_visitor=10, num_equipment=5, num_session=18):
             date = datetime.now() - timedelta(days=random.randint(1, 30))
             duration = random.randint(10, 120)  # продолжительность в минутах
             f.write(
-                f"INSERT INTO t_delivery (id, equipment_id, visitor_id, date, duration) VALUES ({uuid.uuid4()}, {equipment_id}, {visitor_id}, {date}, {duration});\n"
+                f"INSERT INTO session (id, equipment_id, visitor_id, date, duration) VALUES ({uuid.uuid4()}, {equipment_id}, {visitor_id}, {date}, {duration});\n"
             )
 
         f.write("COMMIT;\n")

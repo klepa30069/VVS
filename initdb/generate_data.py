@@ -2,16 +2,17 @@ import psycopg2
 import uuid
 import random
 import faker
+import os
 from datetime import datetime, timedelta
 
 # Подключение к базе данных PostgreSQL
 def connect_db():
     return psycopg2.connect(
-        dbname="gym",  # Имя вашей базы данных
-        user="admin",  # Имя пользователя
-        password="secret",  # Ваш пароль
-        host="localhost",  # Адрес хоста
-        port="5432"  # Порт PostgreSQL
+        dbname=os.getenv("DB_NAME", "gym"), # Имя вашей базы данных
+        user=os.getenv("DB_USER", "admin"), # Имя пользователя
+        password=os.getenv("DB_PASSWORD", "secret"), # Ваш пароль
+        host=os.getenv("DB_HOST", "database"),  # Используем имя сервиса
+        port=os.getenv("DB_PORT", "5432") # Порт PostgreSQL
     )
 
 # Функция для генерации случайных данных для таблицы visitor

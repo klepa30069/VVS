@@ -6,7 +6,7 @@ services:
     volumes:
       - ./initdb:/initdb
     working_dir: /initdb
-    entrypoint: ["python", "generate_sql.py"]
+    entrypoint: [ "python", "generate_data.py" ]
     networks:
       - app-network
 

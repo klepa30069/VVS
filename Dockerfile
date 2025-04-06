@@ -1,11 +1,14 @@
-FROM openjdk:21-jdk-slim
-
+# Убедитесь, что есть явное объявление стадии
+FROM gradle:8.5-jdk21-alpine AS builder
 WORKDIR /app
+COPY build.gradle settings.gradle gradlew ./
+COPY gradle ./gradle
+RUN gradle --no-daemon dependencies
+COPY src ./src
+RUN gradle bootJar --parallel --no-daemon
 
-COPY build /app/build
-
-COPY build/libs/*.jar app.jar
-
+FROM eclipse-temurin:21-jre-alpine
+WORKDIR /app
+COPY --from=builder /app/build/libs/*.jar app.jar
 EXPOSE 8080
-
 ENTRYPOINT ["java", "-jar", "app.jar"]
