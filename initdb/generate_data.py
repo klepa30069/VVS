@@ -59,7 +59,10 @@ def populate_db():
     cursor.execute("SELECT EXISTS (SELECT FROM information_schema.tables WHERE table_name = 'visitor')")
     if not cursor.fetchone()[0]:
         raise Exception("Таблица 'visitor' не существует. Сначала выполните init_schema.sql")
-
+    
+    # Очистка таблиц (важно соблюдать порядок из-за внешних ключей)
+    cursor.execute("TRUNCATE TABLE session, equipment, visitor RESTART IDENTITY CASCADE;")
+    
     # Генерируем данные
     visitors = generate_visitors(10)
     equipment = generate_equipment(5)
