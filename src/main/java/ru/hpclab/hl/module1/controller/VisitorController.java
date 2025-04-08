@@ -1,5 +1,8 @@
 package ru.hpclab.hl.module1.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hpclab.hl.module1.model.Visitor;
@@ -34,6 +37,18 @@ public class VisitorController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteVisitor(@PathVariable String id) {
         visitorService.deleteVisitor(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    // Новый эндпоинт для очистки всех данных
+    @Operation(summary = "Clear all visitors")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "All visitors deleted"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    @PostMapping("/clear")
+    public ResponseEntity<Void> clearAllVisitors() {
+        visitorService.clearAllVisitors();
         return ResponseEntity.noContent().build();
     }
 }

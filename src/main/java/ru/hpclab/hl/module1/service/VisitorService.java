@@ -30,4 +30,8 @@ public class VisitorService {
     public void deleteVisitor(String id) {
         visitorRepository.deleteById(UUID.fromString(id));
     }
+
+    public void clearAllVisitors() {
+        visitorRepository.deleteAll();
+    }
 }

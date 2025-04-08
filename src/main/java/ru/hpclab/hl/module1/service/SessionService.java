@@ -41,4 +41,8 @@ public class SessionService {
 
         return averageDuration != null ? averageDuration : 0.0; // Если нет сессий, возвращаем 0
     }
+
+    public void clearAllSessions() {
+        sessionRepository.deleteAll();
+    }
 }

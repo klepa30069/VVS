@@ -1,9 +1,13 @@
 package ru.hpclab.hl.module1.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hpclab.hl.module1.model.Equipment;
 import ru.hpclab.hl.module1.service.EquipmentService;
+
 import java.util.List;
 
 @RestController
@@ -34,6 +38,18 @@ public class EquipmentController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteEquipment(@PathVariable String id) {
         equipmentService.deleteEquipment(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    // Новый эндпоинт для очистки всех данных
+    @Operation(summary = "Clear all equipment")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "All equipment deleted"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    @PostMapping("/clear")
+    public ResponseEntity<Void> clearAllEquipments() {
+        equipmentService.clearAllEquipments();
         return ResponseEntity.noContent().build();
     }
 }

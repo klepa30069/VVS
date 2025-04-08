@@ -13,7 +13,6 @@ services:
     volumes:
       - pg_data:/var/lib/postgresql/data
       - ./initdb/scripts_python/init_schema.sql:/docker-entrypoint-initdb.d/1_init_schema.sql
-      - ./initdb/scripts_python/init_data.sql:/docker-entrypoint-initdb.d/2_init_data.sql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U admin -d gym"]
       interval: 5s

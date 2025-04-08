@@ -30,4 +30,8 @@ public class EquipmentService {
     public void deleteEquipment(String id) {
         equipmentRepository.deleteById(UUID.fromString(id));
     }
+
+    public void clearAllEquipments() {
+        equipmentRepository.deleteAll();
+    }
 }

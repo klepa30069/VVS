@@ -1,5 +1,8 @@
 package ru.hpclab.hl.module1.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hpclab.hl.module1.model.Session;
@@ -41,5 +44,17 @@ public class SessionController {
     @GetMapping("/average-duration/{visitorId}")
     public double getAverageDuration(@PathVariable String visitorId) {
         return sessionService.calculateAverageDurationForMonth(UUID.fromString(visitorId));
+    }
+
+    // Новый эндпоинт для очистки всех данных
+    @Operation(summary = "Clear all sessions")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "All sessions deleted"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    @PostMapping("/clear")
+    public ResponseEntity<Void> clearAllSessions() {
+        sessionService.clearAllSessions();
+        return ResponseEntity.noContent().build();
     }
 }
