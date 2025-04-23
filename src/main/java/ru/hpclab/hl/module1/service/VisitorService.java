@@ -1,5 +1,6 @@
 package ru.hpclab.hl.module1.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.hpclab.hl.module1.model.Visitor;
 import ru.hpclab.hl.module1.repository.VisitorRepository;
@@ -8,30 +9,71 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class VisitorService {
     private final VisitorRepository visitorRepository;
-
-    public VisitorService(VisitorRepository visitorRepository) {
-        this.visitorRepository = visitorRepository;
-    }
+    private final ObservabilityService observability;
 
     public Visitor addVisitor(Visitor visitor) {
-        return visitorRepository.save(visitor);
+        long startTime = System.currentTimeMillis();
+        try {
+            return visitorRepository.save(visitor);
+        } finally {
+            observability.recordTiming(
+                "service.visitors.create",
+                System.currentTimeMillis() - startTime
+            );
+        }
     }
 
     public Visitor getVisitor(String id) {
-        return visitorRepository.findById(UUID.fromString(id)).orElse(null);
+        long startTime = System.currentTimeMillis();
+        try {
+            return visitorRepository.findByIdWithTiming(
+                UUID.fromString(id),
+                observability
+            );
+        } finally {
+            observability.recordTiming(
+                "service.visitors.get_by_id",
+                System.currentTimeMillis() - startTime
+            );
+        }
     }
 
     public List<Visitor> getAllVisitors() {
-        return visitorRepository.findAll();
+        long startTime = System.currentTimeMillis();
+        try {
+            return visitorRepository.findAll();
+        } finally {
+            observability.recordTiming(
+                "service.visitors.get_all",
+                System.currentTimeMillis() - startTime
+            );
+        }
     }
 
     public void deleteVisitor(String id) {
-        visitorRepository.deleteById(UUID.fromString(id));
+        long startTime = System.currentTimeMillis();
+        try {
+            visitorRepository.deleteById(UUID.fromString(id));
+        } finally {
+            observability.recordTiming(
+                "service.visitors.delete",
+                System.currentTimeMillis() - startTime
+            );
+        }
     }
 
     public void clearAllVisitors() {
-        visitorRepository.deleteAll();
+        long startTime = System.currentTimeMillis();
+        try {
+            visitorRepository.deleteAll();
+        } finally {
+            observability.recordTiming(
+                "service.visitors.clear_all",
+                System.currentTimeMillis() - startTime
+            );
+        }
     }
 }

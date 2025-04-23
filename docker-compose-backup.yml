@@ -1,4 +1,4 @@
-#version: '3.8'
+version: '3.8'
 
 services:
 #  database:
@@ -62,7 +62,7 @@ services:
           memory: 512M
     environment:
 #      SPRING_DATASOURCE_URL: jdbc:postgresql://${DB_URL:-10.60.3.26}:${DB_PORT:-5432}/module1?currentSchema=${DB_NAME:-gym}
-      SPRING_DATASOURCE_URL: jdbc:postgresql://${DB_URL:-10.60.3.26}:${DB_PORT:-5432}/${DB_NAME:-gym}?currentSchema=public
+      SPRING_DATASOURCE_URL: jdbc:postgresql://${DB_URL:-10.60.3.26}:${DB_PORT:-5432}/module1
       SPRING_DATASOURCE_USERNAME: ${DB_USER:-postgres}
       SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD:-postgres}
       SERVER_TOMCAT_THREADS_MAX: 200

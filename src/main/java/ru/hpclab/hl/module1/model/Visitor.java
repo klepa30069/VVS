@@ -14,7 +14,7 @@ import java.util.UUID;
 public class Visitor {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID ID;
 
     @Column(nullable = false)

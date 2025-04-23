@@ -16,16 +16,14 @@ import java.util.UUID;
 public class Session {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID ID;
 
-    @ManyToOne
-    @JoinColumn(name = "equipment_id", nullable = false) // Используем @JoinColumn вместо @Column
-    private Equipment equipment;
+    @Column(name = "equipment_id", nullable = false, columnDefinition = "UUID")
+    private UUID equipmentId;
 
-    @ManyToOne
-    @JoinColumn(name = "visitor_id", nullable = false) // Используем @JoinColumn вместо @Column
-    private Visitor visitor;
+    @Column(name = "visitor_id", nullable = false, columnDefinition = "UUID")
+    private UUID visitorId;
 
     @Column(nullable = false)
     private LocalDateTime date;

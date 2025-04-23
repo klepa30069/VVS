@@ -1,48 +1,119 @@
 package ru.hpclab.hl.module1.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.hpclab.hl.module1.model.Session;
 import ru.hpclab.hl.module1.repository.SessionRepository;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class SessionService {
     private final SessionRepository sessionRepository;
-
-    public SessionService(SessionRepository sessionRepository) {
-        this.sessionRepository = sessionRepository;
-    }
+    private final ObservabilityService observability;
 
     public Session addSession(Session session) {
-        return sessionRepository.save(session);
+        long startTime = System.currentTimeMillis();
+        try {
+            return sessionRepository.save(session);
+        } finally {
+            observability.recordTiming(
+                "service.sessions.create",
+                System.currentTimeMillis() - startTime
+            );
+        }
     }
 
     public Session getSession(String id) {
-        return sessionRepository.findById(UUID.fromString(id)).orElse(null);
+        long startTime = System.currentTimeMillis();
+        try {
+            return sessionRepository.findById(UUID.fromString(id)).orElse(null);
+        } finally {
+            observability.recordTiming(
+                "service.sessions.get_by_id",
+                System.currentTimeMillis() - startTime
+            );
+        }
     }
 
     public List<Session> getAllSessions() {
-        return sessionRepository.findAll();
+        long startTime = System.currentTimeMillis();
+        try {
+            return sessionRepository.findAll();
+        } finally {
+            observability.recordTiming(
+                "service.sessions.get_all",
+                System.currentTimeMillis() - startTime
+            );
+        }
     }
 
     public void deleteSession(String id) {
-        sessionRepository.deleteById(UUID.fromString(id));
+        long startTime = System.currentTimeMillis();
+        try {
+            sessionRepository.deleteById(UUID.fromString(id));
+        } finally {
+            observability.recordTiming(
+                "service.sessions.delete",
+                System.currentTimeMillis() - startTime
+            );
+        }
     }
 
-    public double calculateAverageDurationForMonth(UUID visitorId) {
-        LocalDateTime oneMonthAgo = LocalDateTime.now().minusMonths(1);
-        LocalDateTime now = LocalDateTime.now();
+    public double getAverageDurationByFioMonthAndYear(String fio, int month, int year) {
+        if (month < 1 || month > 12) {
+            throw new IllegalArgumentException("Month must be between 1 and 12");
+        }
 
-        // Получаем среднюю продолжительность за последний месяц
-        Double averageDuration = sessionRepository.averageDurationByVisitorIdAndDateBetween(visitorId, oneMonthAgo, now);
-
-        return averageDuration != null ? averageDuration : 0.0; // Если нет сессий, возвращаем 0
+        long startTime = System.currentTimeMillis();
+        try {
+            Double average = sessionRepository.findAverageDurationWithTiming(
+                fio, month, year, observability
+            );
+            return average != null ? average : 0.0;
+        } finally {
+            observability.recordTiming(
+                "service.sessions.avg_duration",
+                System.currentTimeMillis() - startTime
+            );
+        }
     }
 
     public void clearAllSessions() {
-        sessionRepository.deleteAll();
+        long startTime = System.currentTimeMillis();
+        try {
+            sessionRepository.deleteAll();
+        } finally {
+            observability.recordTiming(
+                "service.sessions.clear_all",
+                System.currentTimeMillis() - startTime
+            );
+        }
+    }
+
+    public List<Session> getSessionsByVisitor(UUID visitorId) {
+        long startTime = System.currentTimeMillis();
+        try {
+            return sessionRepository.findByVisitorIdWithTiming(visitorId, observability);
+        } finally {
+            observability.recordTiming(
+                "service.sessions.by_visitor",
+                System.currentTimeMillis() - startTime
+            );
+        }
+    }
+
+    public List<Session> getSessionsByEquipment(UUID equipmentId) {
+        long startTime = System.currentTimeMillis();
+        try {
+            return sessionRepository.findByEquipmentIdWithTiming(equipmentId, observability);
+        } finally {
+            observability.recordTiming(
+                "service.sessions.by_equipment",
+                System.currentTimeMillis() - startTime
+            );
+        }
     }
 }
