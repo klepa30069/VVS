@@ -62,25 +62,6 @@ public class SessionService {
         }
     }
 
-    public double getAverageDurationByFioMonthAndYear(String fio, int month, int year) {
-        if (month < 1 || month > 12) {
-            throw new IllegalArgumentException("Month must be between 1 and 12");
-        }
-
-        long startTime = System.currentTimeMillis();
-        try {
-            Double average = sessionRepository.findAverageDurationWithTiming(
-                fio, month, year, observability
-            );
-            return average != null ? average : 0.0;
-        } finally {
-            observability.recordTiming(
-                "service.sessions.avg_duration",
-                System.currentTimeMillis() - startTime
-            );
-        }
-    }
-
     public void clearAllSessions() {
         long startTime = System.currentTimeMillis();
         try {
@@ -88,30 +69,6 @@ public class SessionService {
         } finally {
             observability.recordTiming(
                 "service.sessions.clear_all",
-                System.currentTimeMillis() - startTime
-            );
-        }
-    }
-
-    public List<Session> getSessionsByVisitor(UUID visitorId) {
-        long startTime = System.currentTimeMillis();
-        try {
-            return sessionRepository.findByVisitorIdWithTiming(visitorId, observability);
-        } finally {
-            observability.recordTiming(
-                "service.sessions.by_visitor",
-                System.currentTimeMillis() - startTime
-            );
-        }
-    }
-
-    public List<Session> getSessionsByEquipment(UUID equipmentId) {
-        long startTime = System.currentTimeMillis();
-        try {
-            return sessionRepository.findByEquipmentIdWithTiming(equipmentId, observability);
-        } finally {
-            observability.recordTiming(
-                "service.sessions.by_equipment",
                 System.currentTimeMillis() - startTime
             );
         }

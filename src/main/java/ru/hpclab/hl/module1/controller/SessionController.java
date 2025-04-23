@@ -73,49 +73,6 @@ public class SessionController {
         }
     }
 
-    @GetMapping("/average-duration-with-year")
-    public ResponseEntity<Double> getAverageDurationWithYear(
-            @RequestParam String fio,
-            @RequestParam int month,
-            @RequestParam int year) {
-        long startTime = System.currentTimeMillis();
-        try {
-            double average = sessionService.getAverageDurationByFioMonthAndYear(fio, month, year);
-            return ResponseEntity.ok(average);
-        } finally {
-            observability.recordTiming(
-                "controller.sessions.average_duration",
-                System.currentTimeMillis() - startTime
-            );
-        }
-    }
-
-    @GetMapping("/visitor/{visitorId}")
-    public ResponseEntity<List<Session>> getSessionsByVisitor(@PathVariable UUID visitorId) {
-        long startTime = System.currentTimeMillis();
-        try {
-            return ResponseEntity.ok(sessionService.getSessionsByVisitor(visitorId));
-        } finally {
-            observability.recordTiming(
-                "controller.sessions.by_visitor",
-                System.currentTimeMillis() - startTime
-            );
-        }
-    }
-
-    @GetMapping("/equipment/{equipmentId}")
-    public ResponseEntity<List<Session>> getSessionsByEquipment(@PathVariable UUID equipmentId) {
-        long startTime = System.currentTimeMillis();
-        try {
-            return ResponseEntity.ok(sessionService.getSessionsByEquipment(equipmentId));
-        } finally {
-            observability.recordTiming(
-                "controller.sessions.by_equipment",
-                System.currentTimeMillis() - startTime
-            );
-        }
-    }
-
     @Operation(summary = "Clear all sessions")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "All sessions deleted"),
