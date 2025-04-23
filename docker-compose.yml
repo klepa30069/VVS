@@ -75,6 +75,20 @@ services:
     networks:
       - app-network
 
+  additional-service:
+    build: ../additional-service
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
+    ports:
+      - "8081:8081"
+    depends_on:
+      - app
+    networks:
+      - app-network
+
 networks:
   app-network:
     driver: bridge
