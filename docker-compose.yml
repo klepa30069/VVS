@@ -52,7 +52,7 @@ services:
 
   app:
     build: .
-    container_name: spring-boot-app
+    container_name: main-service
 #    depends_on:
 #      - database
     deploy:
@@ -77,11 +77,14 @@ services:
 
   additional-service:
     build: ../additional-service
+    container_name: additional-service
     deploy:
       resources:
         limits:
           cpus: '1.0'
           memory: 512M
+    environment:
+       MODULE1_SERVICE_URL: http://main-service:8080/
     ports:
       - "8081:8081"
     depends_on:
