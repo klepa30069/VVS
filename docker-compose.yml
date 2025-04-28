@@ -58,7 +58,7 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '1.0'
+          cpus: '0.5'
           memory: 512M
     environment:
 #      SPRING_DATASOURCE_URL: jdbc:postgresql://${DB_URL:-10.60.3.26}:${DB_PORT:-5432}/module1?currentSchema=${DB_NAME:-gym}
@@ -81,7 +81,7 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '1.0'
+          cpus: '0.5'
           memory: 512M
     environment:
        MODULE1_SERVICE_URL: http://main-service:8080/
