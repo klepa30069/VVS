@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: additional-service
+  namespace: var12
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: additional-service
+  template:
+    metadata:
+      labels:
+        app: additional-service
+    spec:
+      imagePullSecrets:
+        - name: regcred
+      containers:
+        - name: additional
+          image: klepa300/additional-service:v14.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: config
+          resources:
+            limits:
+              cpu: "1"
+              memory: "1024Mi"
+            requests:
+              cpu: "1"
+              memory: "1024Mi"
