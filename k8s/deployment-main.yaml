@@ -21,7 +21,7 @@ spec:
           hostnames:
             - "hl23.zil"
       imagePullSecrets:
-        - name: regcred
+        - name: klepa300
       containers:
         - name: main-service
           image: klepa300/main-service:v14.0

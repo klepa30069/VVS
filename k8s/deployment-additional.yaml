@@ -14,7 +14,7 @@ spec:
         app: additional-service
     spec:
       imagePullSecrets:
-        - name: regcred
+        - name: klepa300
       containers:
         - name: additional-service
           image: klepa300/additional-service:v14.0

@@ -10,5 +10,5 @@ spec:
   ports:
     - port: 8081
       targetPort: 8081
-      nodePort: 31121
+      nodePort: 31211
 
