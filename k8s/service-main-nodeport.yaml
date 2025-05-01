@@ -1,11 +1,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: main-service
+  name: main-service-nodeport
   namespace: var12
 spec:
+  type: NodePort
   selector:
     app: main-service
   ports:
     - port: 8080
       targetPort: 8080
+      nodePort: 31120
+

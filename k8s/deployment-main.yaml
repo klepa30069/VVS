@@ -13,6 +13,13 @@ spec:
       labels:
         app: main-service
     spec:
+      hostAliases:
+        - ip: "10.60.3.27"
+          hostnames:
+            - "hl22.zil"
+        - ip: "10.60.3.28"
+          hostnames:
+            - "hl23.zil"
       imagePullSecrets:
         - name: regcred
       containers:
@@ -23,7 +30,7 @@ spec:
             - containerPort: 8080
           envFrom:
             - configMapRef:
-                name: config
+                name: apps-config
             - secretRef:
                 name: db-credentials
           env:
@@ -44,3 +51,4 @@ spec:
             requests:
               cpu: "1"
               memory: "1024Mi"
+

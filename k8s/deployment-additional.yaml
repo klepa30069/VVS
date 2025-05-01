@@ -16,14 +16,14 @@ spec:
       imagePullSecrets:
         - name: regcred
       containers:
-        - name: additional
+        - name: additional-service
           image: klepa300/additional-service:v14.0
           imagePullPolicy: Always
           ports:
-            - containerPort: 8080
+            - containerPort: 8081
           envFrom:
             - configMapRef:
-                name: config
+                name: apps-config
           resources:
             limits:
               cpu: "1"
@@ -31,3 +31,4 @@ spec:
             requests:
               cpu: "1"
               memory: "1024Mi"
+
