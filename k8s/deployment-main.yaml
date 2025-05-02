@@ -13,6 +13,8 @@ spec:
       labels:
         app: main-service
     spec:
+      nodeSelector:
+        kubernetes.io/hostname: hl12.zil
       hostAliases:
         - ip: "10.60.3.27"
           hostnames:

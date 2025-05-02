@@ -13,6 +13,8 @@ spec:
       labels:
         app: additional-service
     spec:
+      nodeSelector:
+        kubernetes.io/hostname: hl12.zil
       imagePullSecrets:
         - name: klepa300
       containers:
