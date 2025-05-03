@@ -26,7 +26,7 @@ spec:
         - name: klepa300
       containers:
         - name: main-service
-          image: klepa300/main-service:v14.0
+          image: klepa300/main-service:v17.0
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
@@ -46,6 +46,20 @@ spec:
                 secretKeyRef:
                   name: db-credentials
                   key: password
+          livenessProbe:
+            httpGet:
+              path: /healthcheck
+              port: 8080
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /healthcheck
+              port: 8080
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
           resources:
             limits:
               cpu: "1"
