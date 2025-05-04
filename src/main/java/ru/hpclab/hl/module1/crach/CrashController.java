@@ -11,6 +11,6 @@ public class CrashController {
 
     @PostMapping("/crash")
     public void crash() {
-        System.exit(1);
+        Runtime.getRuntime().halt(1);
     }
 }
