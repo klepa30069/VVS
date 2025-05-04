@@ -20,13 +20,6 @@ spec:
       containers:
         - name: additional-service
           image: klepa300/additional-service:v17.0
-          env:
-            - name: RESILIENCE4J_MODE
-              value: "retry"
-            - name: RETRY_MAX_ATTEMPTS
-              value: "7"
-            - name: RETRY_WAIT_DURATION
-              value: "10s"
           imagePullPolicy: Always
           ports:
             - containerPort: 8081
