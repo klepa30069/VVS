@@ -19,7 +19,7 @@ spec:
         - name: klepa300
       containers:
         - name: additional-service
-          image: klepa300/additional-service:v17.0
+          image: klepa300/additional-service:v18.0
           imagePullPolicy: Always
           ports:
             - containerPort: 8081
