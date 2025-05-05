@@ -20,17 +20,17 @@ data:
 
   MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE: "health,info"
   MANAGEMENT_ENDPOINT_HEALTH_SHOW_DETAILS: "always"
-  RESILIENCE4J_MODE: "retry"  # retry or circuitbreaker
+  RESILIENCE4J_MODE: "circuitbreaker"  # retry or circuitbreaker
   # For retry
-  RETRY_ENABLED: "true"
-  RETRY_MAX_ATTEMPTS: "7"
-  RETRY_WAIT_DURATION: "10s"
+  RETRY_ENABLED: "false"
+  # RETRY_MAX_ATTEMPTS: "7"
+  # RETRY_WAIT_DURATION: "10s"
 
   # For circuitBreaker
-  CB_ENABLED: "false"
-  # CB_FAILURE_RATE: "10"
-  # CB_WAIT_DURATION: "5s" # 5s, 10s or 20s
-  # CB_SLIDING_WINDOW: "5"
+  CB_ENABLED: "true"
+  CB_FAILURE_RATE: "10"
+  CB_WAIT_DURATION: "5s" # 5s, 10s or 20s
+  CB_SLIDING_WINDOW: "5"
 
   CORE_CRASH_DELAY: "10000"
 

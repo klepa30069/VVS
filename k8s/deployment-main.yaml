@@ -13,8 +13,8 @@ spec:
       labels:
         app: main-service
     spec:
-      nodeSelector:
-        kubernetes.io/hostname: hl12.zil
+#      nodeSelector:
+#        kubernetes.io/hostname: hl12.zil
       hostAliases:
         - ip: "10.60.3.27"
           hostnames:
@@ -50,16 +50,18 @@ spec:
             httpGet:
               path: /healthcheck
               port: 8080
-            periodSeconds: 10
+            initialDelaySeconds: 20
+            periodSeconds: 2
             timeoutSeconds: 3
-            failureThreshold: 3
+            failureThreshold: 2
           readinessProbe:
             httpGet:
               path: /healthcheck
               port: 8080
-            periodSeconds: 10
+            initialDelaySeconds: 20
+            periodSeconds: 2
             timeoutSeconds: 3
-            failureThreshold: 3
+            failureThreshold: 2
           resources:
             limits:
               cpu: "1"
